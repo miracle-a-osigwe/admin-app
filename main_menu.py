@@ -20,26 +20,20 @@ class MainMenuPage(QWidget):
         left_layout = QVBoxLayout()
 
         # Create a button list to add to the layout
-        btn_list = ["Financial Records", "Inventory Records", "Staff Records", "Parents Records"]
+        btn_dict = {
+            "Financial Records": "Financial Records", 
+            "Inventory Records": "Inventory Records", 
+            "Staff Records": "Staff Records", 
+            "Parents Records": "Parents Records"
+            }
 
         #Create some buttons
-        financial_btn = QPushButton(btn_list[0], left_section)
-        inventory_btn = QPushButton(btn_list[1], left_section)
-        staff_btn = QPushButton(btn_list[2], left_section)
-        parents_btn = QPushButton(btn_list[3], left_section)
+        for b_name, tag in btn_dict.items():
+            button = QPushButton(b_name, left_section)
+            button.clicked.connect(lambda _, c=tag: self.display_content(c))
+            left_layout.addWidget(button)
 
-        # Displayt the tag name for the buttons
-        financial_btn.clicked.connect(lambda : self.display_content(btn_list[0]))
-        inventory_btn.clicked.connect(lambda : self.display_content(btn_list[1]))
-        staff_btn.clicked.connect(lambda : self.display_content(btn_list[2]))
-        parents_btn.clicked.connect(lambda : self.display_content(btn_list[3]))
-
-        left_layout.addWidget(financial_btn)
-        left_layout.addWidget(inventory_btn)
-        left_layout.addWidget(staff_btn)
-        left_layout.addWidget(parents_btn)
         left_section.setLayout(left_layout)
-        
         
         # Create the right section (75% of the screen)
         right_section = QWidget()
