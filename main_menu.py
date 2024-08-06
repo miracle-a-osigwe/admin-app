@@ -27,7 +27,7 @@ class MainMenuPage(QWidget):
             "Parents Records": "Parents Records"
             }
 
-        #Create some buttons
+        # Create the buttons
         for b_name, tag in btn_dict.items():
             button = QPushButton(b_name, left_section)
             button.clicked.connect(lambda _, c=tag: self.display_content(c))
