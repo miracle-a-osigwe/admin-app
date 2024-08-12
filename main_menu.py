@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import (
     QSplitter, QTextEdit, QPushButton, QStackedWidget
     )
 from PyQt5.QtCore import Qt
+# from data_store_main import Engine
+from finance import FinanceRecords
 
 class MainMenuPage(QWidget):
     def __init__(self):
@@ -30,7 +32,10 @@ class MainMenuPage(QWidget):
         # Create the buttons
         for b_name, tag in btn_dict.items():
             button = QPushButton(b_name, left_section)
-            button.clicked.connect(lambda _, c=tag: self.display_content(c))
+            if not "finan" in b_name.lower():
+                button.clicked.connect(lambda _, c=tag: self.display_content(c))
+            else:
+                button.clicked.connect(self.connect_finance_record)
             left_layout.addWidget(button)
 
         left_section.setLayout(left_layout)
@@ -62,7 +67,7 @@ class MainMenuPage(QWidget):
 
         # Set window properties
         self.setWindowTitle('Main Menu Page')
-        self.setGeometry(400, 100, 1200, 900)
+        self.setGeometry(100, 50, 1200, 600)
     
     def display_content(self, button_tag):
         # Insert the new data into the split screen
@@ -71,10 +76,20 @@ class MainMenuPage(QWidget):
             self.content_display.removeWidget(widget)
             widget.deleteLater()
         
-        # Add new content
         content_label = QLabel(button_tag)
         self.content_display.addWidget(content_label)
         self.content_display.setCurrentWidget(content_label)
+    
+    def connect_finance_record(self):
+        self.finance_records = FinanceRecords()
+        
+        while self.content_display.count() > 0:
+            widget = self.content_display.widget(0)
+            self.content_display.removeWidget(widget)
+            widget.deleteLater()
+        
+        self.content_display.addWidget(self.finance_records)
+        self.content_display.setCurrentWidget(self.finance_records)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
