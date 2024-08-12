@@ -32,7 +32,7 @@ class LoadingPage(QWidget):
 
         # Set window properties
         self.setWindowTitle('Loading Page')
-        self.setGeometry(600, 200, 800, 700)
+        self.setGeometry(300, 100, 800, 400)
 
         # Add timer setup to ensure the switch to the main page
         self.timer = QTimer(self)
