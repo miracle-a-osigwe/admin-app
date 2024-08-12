@@ -9,7 +9,7 @@ DataBase = declarative_base()
 class Income(DataBase):
     __tablename__ = "income"
 
-    id = Column(Integer, primary_key=True, autoincrement=True, default=1)
+    id = Column(String, primary_key=True) #, autoincrement=True, default=1)
     source = Column(String, nullable=False)
     amount = Column(Float, nullable=False)
     date = Column(DateTime, default=datetime.now(dt.UTC))
@@ -18,7 +18,7 @@ class Income(DataBase):
 class Expenses(DataBase):
     __tablename__ = "expenses"
 
-    id = Column(Integer, primary_key=True, autoincrement=True, default=1)
+    id = Column(String, primary_key=True) #, autoincrement=True, default=1)
     category = Column(String, nullable=False)
     amount = Column(Integer, nullable=False)
     date = Column(DateTime, default=datetime.now(dt.UTC))
@@ -59,3 +59,17 @@ class Engine():
         self.session.add(expense)
         self.session.commit()
         return True
+
+    def view_income(self):
+        """
+        A function to return all the income records
+        """
+        records = self.session.query(Income).all()
+        return records
+    
+    def view_expense(self):
+        """
+        A function to return all the expense records.
+        """
+        records = self.session.query(Expenses).all()
+        return records
