@@ -24,6 +24,15 @@ class Expenses(DataBase):
     date = Column(DateTime, default=datetime.now(dt.UTC))
     description = Column(String)
 
+class Inventory(DataBase):
+    __tablename__ = 'inventory'
+    
+    id = Column(String, primary_key=True) #, autoincrement=True, default=1)
+    item_name = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=False)
+    price_per_unit = Column(Float, nullable=False)
+    date_added = Column(DateTime, default=datetime.now(dt.UTC))
+    description = Column(String)
 
 class Engine():
 
@@ -73,3 +82,30 @@ class Engine():
         """
         records = self.session.query(Expenses).all()
         return records
+
+    def add_inventory(self, **kwargs):
+        """
+        A function that interfaces with the database and creates an inventory.
+        """
+        inventory = Inventory(**kwargs)
+        self.session.add(inventory)
+        self.session.commit()
+        return True
+
+    def get_current_inventory(self):
+        """
+        A function to get the current inventory.
+        """
+        records = self.session.query(Inventory).all()
+        return records
+    
+    def update_inventory(self, data_id, data):
+        """
+        A function to update the inventory record about an item.
+        """
+        record = self.session.query(Inventory).filter_by(id=data_id).first()
+        if record:
+            record.quantity = data
+            self.session.commit()
+            return True
+        return False
